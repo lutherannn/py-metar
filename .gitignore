@@ -1,1 +1,3 @@
 *.txt
+py-metar-test.py
+.vscode
