@@ -4,6 +4,13 @@ import sys
 
 
 def main():
+    #Check for no args
+    if len(sys.argv) < 2:
+        print("Not enough arguments, see --help")
+        return 0
+    if sys.argv[1] == "--help":
+        print("USAGE: python py-metar.py <airport icao code 1> <2> <3> etc...")
+        return 0
     # remove the "python py-metar.py" from the args list
     sys.argv.pop(0)
 
@@ -40,6 +47,4 @@ def main():
         # Print final result
         print(f"METAR for: {i.upper()}")
         print(result + "\n")
-
-
 main()
