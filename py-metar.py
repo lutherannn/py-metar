@@ -2,6 +2,16 @@ import requests
 import json
 import sys
 
+class colors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
 
 def main():
     #Check for no args
@@ -44,6 +54,6 @@ def main():
             result = result.replace(x, "")
 
         # Print final result
-        print(f"METAR for: {i.upper()}")
-        print(result + "\n")
+        print(f"METAR for: {colors.WARNING}{i.upper()}{colors.ENDC}")
+        print(f"{colors.OKGREEN} {result} \n {colors.ENDC}")
 main()
