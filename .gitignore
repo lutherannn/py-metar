@@ -1,3 +1,4 @@
 *.txt
 py-metar-test.py
 .vscode
+__pycache__
