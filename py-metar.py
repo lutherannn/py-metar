@@ -34,7 +34,6 @@ def main():
         try:
             req.raise_for_status()
             resp = json.loads(req.text)
-            #print(json.dumps(resp, indent=1))
         except requests.exceptions.HTTPError as e:
             print(e)
         # Get the metar from the JSON
