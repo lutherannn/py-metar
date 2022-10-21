@@ -1,6 +1,7 @@
 import requests
 import json
 import sys
+from math import floor
 
 
 class colors:
@@ -14,22 +15,32 @@ class colors:
     BOLD = "\033[1m"
     UNDERLINE = "\033[4m"
 
-
+verbose = True
 windShow = False
+convertToFahrenheit = False
 
 # Check for no args
 if len(sys.argv) < 2:
     print("Not enough arguments, see --help")
     sys.exit()
 if sys.argv[1] == "--help":
-    print("USAGE: python py-metar.py <airport icao code 1> <2> <3> etc...")
+    print("USAGE: python py-metar.py <airport icao code 1> <2> <3> etc... -q -w -c")
+    print("-q: disables verbose, shows only metar")
+    print("-w: shows wind direction")
+    print("-f: converts temperature to Fahrenheit")
     sys.exit()
 
 # remove the "python py-metar.py" from the args list
 sys.argv.pop(0)
+if "-q" in sys.argv:
+    verbose = False
+    sys.argv.remove("-q")
 if "-w" in sys.argv:
     windShow = True
     sys.argv.remove("-w")
+if "-f" in sys.argv:
+    convertToFahrenheit = True
+    sys.argv.remove("-f")
 
 
 # Characters for formatting output later
@@ -102,7 +113,24 @@ for i in sys.argv:
             direction = "NNW"
 
     # Print final result
-    print(f"METAR for: {colors.WARNING}{i.upper()}{colors.ENDC}")
-    print(f"{colors.OKGREEN} {result} {colors.ENDC}")
-    if windShow:
-        print(f"{colors.OKCYAN}Wind from: {direction} {colors.ENDC}\n")
+    if verbose:
+            print(f"METAR for: {colors.WARNING}{i.upper()}{colors.ENDC}")
+            print(f"{colors.OKGREEN} {result} {colors.ENDC}")
+            print(f"{colors.WARNING}Airport: {colors.OKBLUE}{result[0:4]}{colors.ENDC}")
+            print(f"{colors.WARNING}Posted Time: {colors.OKBLUE}{result[7:11]}z{colors.ENDC}")
+            print(f"{colors.WARNING}Wind: {colors.OKBLUE}{result[13:16]}@{result[16:20]}{colors.ENDC}")
+            if windShow:
+                print(f"{colors.OKCYAN}Wind from: {direction} {colors.ENDC}")
+            print(f"{colors.WARNING}Visibility: {colors.OKBLUE}{result[21:25]}{colors.ENDC}")
+            if convertToFahrenheit:
+                temp = floor((int(result[33:35]) * 9.0/5.0) + 32.0)
+                print(f"{colors.WARNING}Temperature: {colors.OKBLUE}{temp}{colors.ENDC}")
+            else:
+                print(f"{colors.WARNING}Temperature: {colors.OKBLUE}{result[33:35]}{colors.ENDC}")
+            print(f"{colors.WARNING}Dewpoint: {colors.OKBLUE}{result[36:40]}{colors.ENDC}")
+            print(f"{colors.WARNING}Altimeter: {colors.OKBLUE}{result[41:45]}{colors.ENDC}")
+    else:
+       print(f"METAR for: {colors.WARNING}{i.upper()}{colors.ENDC}")
+       print(f"{colors.OKGREEN} {result} {colors.ENDC}")
+       if windShow:
+                print(f"{colors.OKCYAN}Wind from: {direction} {colors.ENDC}")
