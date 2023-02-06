@@ -15,6 +15,7 @@ class colors:
     BOLD = "\033[1m"
     UNDERLINE = "\033[4m"
 
+
 verbose = True
 windShow = False
 convertToFahrenheit = False
@@ -48,7 +49,7 @@ chars = "[]'"
 
 # Get API Key
 with open("key.txt", "r") as f:
-    key = f.read()
+    key = f.read().rstrip("\n")
 f.close()
 
 for i in sys.argv:
